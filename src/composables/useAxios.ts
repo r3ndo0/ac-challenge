@@ -1,3 +1,4 @@
+import { useCookies } from '@vueuse/integrations/useCookies'
 import axios from 'axios'
 
 /* Base URL comes from your Vite env config */
@@ -22,7 +23,7 @@ export const privateInstance = axios.create({
 })
 
 privateInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token') // or use cookies / Pinia
+  const token = useCookies().get('token')
   if (token) {
     config.headers.Authorization = `Token ${token}`
   }

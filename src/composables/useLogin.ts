@@ -1,6 +1,6 @@
 // src/api/auth.ts   (add this next to useRegister)
 
-import { useMutation } from '@tanstack/vue-query'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { publicInstance } from '@/composables/useAxios'
 import type { paths } from '@/types/api'
 import { toast } from 'vue-sonner'
@@ -24,16 +24,16 @@ interface ApiValidationError {
 
 export function useLogin() {
   const router = useRouter()
-  const { setUser } = useUserStore()
+  const queryClient = useQueryClient()
   const cookies = useCookies()
 
   return useMutation<AxiosResponse<LoginResponse>, AxiosError<ApiValidationError>, LoginRequest>({
     mutationFn: (credentials) => publicInstance.post('/users/login', credentials),
 
     onSuccess: (data) => {
-      setUser(data.data.user)
+      queryClient.setQueryData(['currentUser'], data.data.user)
       cookies.set('token', data.data.user.token)
-      router.push({ path: '/' })
+      router.push({ path: '/articles' })
     },
 
     onError: (error) => {

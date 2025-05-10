@@ -22,24 +22,26 @@
         >{{ name }}</RouterLink
       >
     </aside>
-    <slot />
+
+    <div class="pl-[240px]">
+      <slot />
+    </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/useUser'
-import { storeToRefs } from 'pinia'
+import { useCurrentUser } from '@/composables/useAuth'
 import { RouterLink } from 'vue-router'
-const userStore = useUserStore()
-const { user } = storeToRefs(userStore)
+const { data: user } = useCurrentUser()
+
 const sidebarLinks = [
   {
     name: 'All Articles',
-    to: '/',
+    to: '/articles',
   },
   {
     name: 'New Article',
-    to: '/login',
+    to: '/articles/create',
   },
 ]
 </script>

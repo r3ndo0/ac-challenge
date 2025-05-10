@@ -3,8 +3,7 @@ import { useQuery } from '@tanstack/vue-query'
 import type { paths } from '@/types/api'
 import type { AxiosError } from 'axios'
 import { privateInstance } from './useAxios'
-import Cookies from 'universal-cookie'
-import { useCookies } from '@vueuse/integrations'
+import { useCookies } from '@vueuse/integrations/useCookies'
 
 type CurrentUserResponse = paths['/user']['get']['responses'][200]['content']['application/json']
 
@@ -16,9 +15,11 @@ async function fetchCurrentUser() {
 export function useCurrentUser() {
   const token = useCookies().get('token')
 
-  return useQuery<CurrentUserResponse['user'], AxiosError>({
+  const res = useQuery<CurrentUserResponse['user'], AxiosError>({
     queryKey: ['currentUser'],
     queryFn: fetchCurrentUser,
     enabled: !!token,
   })
+
+  return res
 }
