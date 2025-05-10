@@ -2,11 +2,14 @@
 
 @theme inline {
   --color-primary-bg2: #009595;
+  --color-primary-bg1:#E0F7F7;
+  --color-primary-fg1:#009595;
   --color-primary-bg2-hover: #007070;
   --color-primary-bg2-disabled: #99e3e3;
   --color-error-fg1: #d61e20;
   --color-neutral-fg1: #333333;
   --color-neutral-st2: #cccccc;
+  --color-neutral-st3:#E6E6E6;
   --color-neutral-st2-hover: #b3b3b3;
   --color-neutral-st2-disabled: #cccccc;
   --color-neutral-bg2: #f0f0f0;
