@@ -3,7 +3,7 @@
     <RegularInput name="tag" placeholder="New tag" label="Tags" class="mb-3" />
     <Button class="w-full mb-6">Add New Tag</Button>
     <ul class="flex p-4 border border-neutral-st3 rounded-2xl flex-col gap-2">
-      <li v-for="tag in tags" :key="tag">
+      <li v-for="tag in sortedTags" :key="tag">
         <Checkbox :checked="isChecked(tag)" :label="tag" @select="toggle" />
       </li>
     </ul>
@@ -13,15 +13,19 @@
 <script setup lang="ts">
 import Checkbox from '@/components/ui/Checkbox.vue'
 import RegularInput from '@/components/ui/RegularInput.vue'
-import { useAddTag, useTags } from '@/composables/useTags'
+import { useTags } from '@/composables/useTags'
 import Button from '@/components/ui/Button.vue'
 import { useForm } from 'vee-validate'
-import { NewTagSchema } from '@/schemas/NewTagScgena'
+import { NewTagSchema } from '@/schemas/NewTagSchema'
 import { useQueryClient } from '@tanstack/vue-query'
+import { computed } from 'vue'
 const selected = defineModel<string[]>({ default: [] })
 const emit = defineEmits(['new-tag'])
-const { data: tags = [], isLoading, error } = useTags()
-const { mutate } = useAddTag()
+const tagsQuery = useTags()
+const sortedTags = computed(() => {
+  const list = tagsQuery.data.value ?? []
+  return [...list].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
+})
 const isChecked = (tag: string) => selected.value.includes(tag)
 const { handleSubmit, resetForm } = useForm({
   validationSchema: NewTagSchema,
@@ -45,8 +49,12 @@ const onSubmit = handleSubmit(({ tag }) => {
   resetForm()
 })
 function toggle(tag: string) {
-  selected.value = isChecked(tag)
-    ? selected.value.filter((t) => t !== tag)
-    : [...selected.value, tag]
+  const next = new Set(selected.value)
+  if (next.has(tag)) {
+    next.delete(tag)
+  } else {
+    next.add(tag)
+  }
+  selected.value = [...next]
 }
 </script>
