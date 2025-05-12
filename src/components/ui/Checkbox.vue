@@ -4,7 +4,7 @@
     <span
       :class="checked ? 'bg-primary-bg2 border-primary-bg2' : ' border-neutral-st1'"
       class="h-4 w-4 rounded-sm flex border-2 justify-center items-center"
-      ><CheckIcon class="w-2.5 h-[7px]"
+      ><CheckIcon class="w-2.5 h-[7px] text-white"
     /></span>
     {{ label }}
   </label>

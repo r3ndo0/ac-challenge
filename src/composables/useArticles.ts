@@ -9,10 +9,13 @@ import { toast } from 'vue-sonner'
 import { CustomToast } from './useToast'
 
 type Articles200 = paths['/articles']['get']['responses'][200]['content']['application/json']
+
 type CreateArticle = paths['/articles']['post']
 type CreateArticleBody = CreateArticle['requestBody']['content']['application/json']
 type CreateArticleRes = CreateArticle['responses'][201]['content']['application/json']
+type DeleteArticle = paths['/articles/{slug}']['delete']
 
+type DeleteArticleResponse = DeleteArticle['responses'][200] extends { content: any } ? never : void
 async function fetchArticles(limit = 10, page = 0, author: Ref<string | undefined>) {
   const offset = page * limit
 
@@ -61,6 +64,35 @@ export function useCreateArticle() {
         },
       })
       router.push('/articles')
+    },
+  })
+}
+
+async function remove(slug: string): Promise<DeleteArticleResponse> {
+  await privateInstance.delete(`/articles/${slug}`)
+}
+
+export function useDeleteArticle() {
+  const qc = useQueryClient()
+
+  return useMutation<DeleteArticleResponse, AxiosError, string>({
+    mutationFn: remove,
+
+    onSuccess() {
+      qc.invalidateQueries({ queryKey: ['articles'] })
+      toast.success(CustomToast, {
+        position: 'top-center',
+        componentProps: {
+          htmlContent: `<p>Article deleted successfuly</p>`,
+        },
+        style: {
+          background: '#E3F6E9',
+          boxShadow: '0 0 10px #2533433D',
+          padding: '12px 16px',
+          borderRadius: '4px',
+          color: '#17B24A',
+        },
+      })
     },
   })
 }
