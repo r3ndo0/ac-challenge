@@ -9,12 +9,14 @@ import { toast } from 'vue-sonner'
 import { CustomToast } from './useToast'
 
 type Articles200 = paths['/articles']['get']['responses'][200]['content']['application/json']
-
+type Article200 = paths['/articles/{slug}']['get']['responses'][200]['content']['application/json']
 type CreateArticle = paths['/articles']['post']
 type CreateArticleBody = CreateArticle['requestBody']['content']['application/json']
 type CreateArticleRes = CreateArticle['responses'][201]['content']['application/json']
 type DeleteArticle = paths['/articles/{slug}']['delete']
-
+type UpdateOp = paths['/articles/{slug}']['put']
+type UpdatePayload = UpdateOp['requestBody']['content']['application/json']
+type UpdateResponse = UpdateOp['responses'][200]['content']['application/json']
 type DeleteArticleResponse = DeleteArticle['responses'][200] extends { content: any } ? never : void
 async function fetchArticles(limit = 10, page = 0, author: Ref<string | undefined>) {
   const offset = page * limit
@@ -93,6 +95,53 @@ export function useDeleteArticle() {
           color: '#17B24A',
         },
       })
+    },
+  })
+}
+
+async function fetchArticle(slug: string) {
+  const { data } = await publicInstance.get<Article200>(`/articles/${slug}`)
+  return data.article
+}
+export function useSingleArticle(slug: Ref<string | undefined>) {
+  return useQuery<Article200['article'], AxiosError>({
+    queryKey: ['article', slug],
+    queryFn: () => fetchArticle(slug.value as string),
+    enabled: computed(() => !!slug.value),
+  })
+}
+
+async function putArticle(slug: string, payload: UpdatePayload) {
+  const { data } = await privateInstance.put<UpdateResponse>(`/articles/${slug}`, payload)
+  return data.article
+}
+
+export function useUpdateArticle() {
+  const qc = useQueryClient()
+  const router = useRouter()
+  return useMutation<
+    UpdateResponse['article'],
+    AxiosError,
+    { slug: string; article: UpdatePayload['article'] }
+  >({
+    mutationFn: ({ slug, article }) => putArticle(slug, { article }),
+
+    onSuccess() {
+      qc.invalidateQueries({ queryKey: ['articles'] })
+      toast.success(CustomToast, {
+        position: 'top-center',
+        componentProps: {
+          htmlContent: `<p><strong>Well done!</strong>: Article updated successfuly</p>`,
+        },
+        style: {
+          background: '#E3F6E9',
+          boxShadow: '0 0 10px #2533433D',
+          padding: '12px 16px',
+          borderRadius: '4px',
+          color: '#17B24A',
+        },
+      })
+      router.push('/articles')
     },
   })
 }

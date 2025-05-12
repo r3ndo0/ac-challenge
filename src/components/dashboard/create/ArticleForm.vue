@@ -5,6 +5,9 @@
       <RegularInput name="title" label="Title" placeholder="Title" as="input" />
       <RegularInput name="description" label="Description" placeholder="Description" as="input" />
       <RegularInput name="body" label="Body" placeholder="" as="textarea" />
+
+      {{ JSON.stringify(values) }}
+
       <Button class="mt-6 px-4">Submit</Button>
     </div>
   </form>
@@ -13,16 +16,33 @@
 import RegularInput from '@/components/ui/RegularInput.vue'
 import Button from '@/components/ui/Button.vue'
 import { useForm } from 'vee-validate'
+import { watch } from 'vue'
 import { NewArticleSchema, type NewArticle } from '@/schemas/NewArticleSchema'
-import type { z } from 'zod'
-const { handleSubmit } = useForm({
+
+interface Props {
+  initialValues?: {
+    title: string
+    description: string
+    body: string
+  }
+}
+const props = defineProps<Props>()
+
+const { handleSubmit, setValues, resetForm, values } = useForm<NewArticle>({
   validationSchema: NewArticleSchema,
 })
+
+watch(
+  () => props.initialValues,
+  (vals) => {
+    if (vals) resetForm({ values: props.initialValues })
+  },
+  { immediate: true },
+)
 
 const emit = defineEmits<{
   (e: 'submit', payload: NewArticle): void
 }>()
-const onSubmit = handleSubmit((values) => {
-  emit('submit', values) // values is type-safe
-})
+
+const onSubmit = handleSubmit((values) => emit('submit', values))
 </script>

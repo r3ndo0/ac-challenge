@@ -70,6 +70,7 @@ import TrippleDotsIcon from '../ui/icons/TrippleDotsIcon.vue'
 import WarningIcon from '../ui/icons/WarningIcon.vue'
 import Button from '../ui/Button.vue'
 import { useDeleteArticle } from '@/composables/useArticles'
+import { useRouter } from 'vue-router'
 type Article =
   paths['/articles']['get']['responses'][200]['content']['application/json']['articles'][number]
 
@@ -84,11 +85,11 @@ interface Props {
   item: Article
   index: number
 }
-defineProps<Props>()
+const props = defineProps<Props>()
 const deleteModal = ref(false)
-
+const router = useRouter()
 const dropdownActions = [
-  { label: 'Edit', onSelect: () => console.log('edit') },
+  { label: 'Edit', onSelect: () => router.push(`/articles/edit/${props.item.slug}`) },
   { label: 'Delete', onSelect: () => (deleteModal.value = true) },
 ]
 

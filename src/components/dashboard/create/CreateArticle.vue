@@ -6,7 +6,7 @@
 </template>
 <script setup lang="ts">
 import TagsForm from './TagsForm.vue'
-import CreateArticleForm from './CreateArticleForm.vue'
+import CreateArticleForm from './ArticleForm.vue'
 import { ref } from 'vue'
 import type { NewArticle } from '@/schemas/NewArticleSchema'
 import { useCreateArticle } from '@/composables/useArticles'
