@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 flex gap-6 w-full h-full">
+  <div class="p-6 flex md:flex-row flex-col-reverse gap-6 w-full h-full">
     <CreateArticleForm :loading="isPending" @submit="onSubmit" />
     <TagsForm v-model="selectedTags" @new-tag="prependTag" />
   </div>

@@ -15,7 +15,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form @submit="onSubmit" class="md:w-[480px] w-[350px] p-4 md:p-6 bg-white">
+  <form @submit="onSubmit" class="md:w-[480px] rounded-lg w-[350px] p-4 md:p-6 bg-white">
     <RegularInput name="username" label="Username" placeholder="sample text" as="input" />
     <RegularInput name="email" label="Email" placeholder="sample text" as="input" />
     <RegularInput

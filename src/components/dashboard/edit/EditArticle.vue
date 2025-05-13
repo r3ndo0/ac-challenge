@@ -1,12 +1,12 @@
 <template>
-  <div class="p-6 flex gap-6 w-full h-full">
+  <div class="p-6 flex md:flex-row flex-col-reverse gap-6 w-full h-full">
     <ArticleForm
       :loading="isPending"
       v-if="status === 'success'"
       :initialValues="initialValues"
       @submit="onSubmit"
     />
-    <div class="w-full px-6 bg-white basis-1/3 flex justify-center items-center">
+    <div class="w-full px-6 bg-white py-8 md:py-0 basis-1/3 flex justify-center items-center">
       <p class="text-center">
         looks like RealWorld api does not provide a way to update tags associated with an article.
       </p>
