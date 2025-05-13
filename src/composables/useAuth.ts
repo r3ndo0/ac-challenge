@@ -4,6 +4,7 @@ import type { paths } from '@/types/api'
 import type { AxiosError } from 'axios'
 import { privateInstance } from './useAxios'
 import { useCookies } from '@vueuse/integrations/useCookies'
+import { useRouter } from 'vue-router'
 
 type CurrentUserResponse = paths['/user']['get']['responses'][200]['content']['application/json']
 
@@ -22,4 +23,14 @@ export function useCurrentUser() {
   })
 
   return res
+}
+
+export function useSignOut() {
+  const router = useRouter()
+  const cookies = useCookies()
+
+  return () => {
+    cookies.remove('token', { path: '/' })
+    router.push('/login')
+  }
 }

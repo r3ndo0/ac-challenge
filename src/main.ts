@@ -21,13 +21,20 @@ const queryClient = new QueryClient({
 const app = createApp(App)
 
 router.beforeEach((to, _from, next) => {
-  const needsAuth = to.matched.some((r) => r.meta.requiresAuth)
   const token = useCookies().get('token')
+  const needsAuth = to.matched.some((r) => r.meta.requiresAuth)
+
+  if (token && (to.name === 'login' || to.name === 'register')) {
+    next({ name: 'articles' })
+    return
+  }
+
   if (needsAuth && !token) {
     next({ name: 'login', query: { redirect: to.fullPath } })
-  } else {
-    next()
+    return
   }
+
+  next()
 })
 
 app.use(router)

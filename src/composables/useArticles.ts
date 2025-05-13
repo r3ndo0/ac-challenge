@@ -18,8 +18,8 @@ type UpdateOp = paths['/articles/{slug}']['put']
 type UpdatePayload = UpdateOp['requestBody']['content']['application/json']
 type UpdateResponse = UpdateOp['responses'][200]['content']['application/json']
 type DeleteArticleResponse = DeleteArticle['responses'][200] extends { content: any } ? never : void
-async function fetchArticles(limit = 10, page = 0, author: Ref<string | undefined>) {
-  const offset = page * limit
+async function fetchArticles(limit = 10, page = 1, author: Ref<string | undefined>) {
+  const offset = (page - 1) * limit
 
   const { data } = await privateInstance.get<Articles200>('/articles', {
     params: { author: author.value, limit, offset },
@@ -131,7 +131,7 @@ export function useUpdateArticle() {
     mutationFn: ({ slug, article }) => putArticle(slug, { article }),
 
     onSuccess() {
-      qc.invalidateQueries({ queryKey: ['articles', 'article'] })
+      qc.invalidateQueries({ queryKey: ['articles'] })
       toast.success(CustomToast, {
         position: 'top-center',
         componentProps: {

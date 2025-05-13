@@ -2,7 +2,6 @@
 import { useForm } from 'vee-validate'
 import RegularInput from '../ui/RegularInput.vue'
 import Button from '../ui/Button.vue'
-import { useRegister } from '@/composables/useRegister'
 import { LoginFormSchema } from '@/schemas/LoginFormSchema'
 import { useLogin } from '@/composables/useLogin'
 
@@ -16,7 +15,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form @submit="onSubmit" class="w-[480px] p-6 bg-white">
+  <form @submit="onSubmit" class="md:w-[480px] w-[350px] p-4 md:p-6 bg-white">
     <RegularInput name="email" label="Email" placeholder="sample text" as="input" />
     <RegularInput
       type="password"
@@ -26,5 +25,10 @@ const onSubmit = handleSubmit((values) => {
       as="input"
     />
     <Button :loading="isPending" :disabled="isPending" class="w-full mt-6">Sign In</Button>
+
+    <div class="mt-3 text-center text-sm text-neutral-fg1">
+      Don’t have an account?
+      <router-link class="text-pt-info font-semibold" to="/register">Sign up now</router-link>
+    </div>
   </form>
 </template>

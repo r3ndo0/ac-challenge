@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { publicInstance } from '@/composables/useAxios'
 import type { paths } from '@/types/api'
 import { toast } from 'vue-sonner'
-import type { AxiosError } from 'axios'
+import type { AxiosError, AxiosResponse } from 'axios'
 import { useRouter } from 'vue-router'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { markRaw } from 'vue'
@@ -24,16 +24,21 @@ export function useRegister() {
 
   const cookies = useCookies()
 
-  return useMutation<RegisterResponse, AxiosError<ApiValidationError>, RegisterRequest>({
+  return useMutation<
+    AxiosResponse<RegisterResponse>,
+    AxiosError<ApiValidationError>,
+    RegisterRequest
+  >({
     mutationFn: (data) => publicInstance.post('/users', data),
 
     onSuccess: (data) => {
-      queryClient.setQueryData(['currentUser'], data.user)
-      cookies.set('token', data.user.token)
+      queryClient.setQueryData(['currentUser'], data.data.user)
+      cookies.set('token', data.data.user.token)
       router.push({ path: '/articles' })
     },
 
     onError: (error) => {
+      console.log(error)
       const fieldErrors = error.response?.data?.errors
       if (!fieldErrors) {
         toast.error('An unexpected error occurred. Please try again.')
