@@ -40,7 +40,7 @@ export interface DropdownItem {
   onSelect: () => void
 }
 
-const props = defineProps<{
+defineProps<{
   items: DropdownItem[]
 }>()
 </script>

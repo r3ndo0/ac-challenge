@@ -1,6 +1,4 @@
-import { defineComponent, h, markRaw } from 'vue'
-import { toast } from 'vue-sonner'
-import { custom } from 'zod'
+import { defineComponent, h } from 'vue'
 
 // Generic toast component that accepts plain HTML content
 export const CustomToast = defineComponent({

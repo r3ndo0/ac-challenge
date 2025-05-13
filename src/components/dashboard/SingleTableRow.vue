@@ -29,15 +29,15 @@
     </td>
 
     <td class="relative">
-      <Dropdown :items="dropdownActions"
+      <AcDropdown :items="dropdownActions"
         ><template #trigger>
           <div
             class="w-8 h-8 rounded-xl border border-neutral-st2 flex items-center justify-center"
           >
             <TrippleDotsIcon /></div></template
-      ></Dropdown>
+      ></AcDropdown>
     </td>
-    <Dialog v-model="deleteModal"
+    <AcDialog v-model="deleteModal"
       ><template #title
         ><h4 class="py-4 px-6 border-b border-neutral-st3">Delete Article</h4></template
       >
@@ -49,14 +49,14 @@
           <p class="text-sm text-neutral-fg1">Are you sure you want to delete this article?</p>
         </div>
         <div class="py-4 px-6 flex justify-end gap-4 items-center">
-          <Button class="px-4" variant="danger" @click="() => confirmDelete(item.slug)"
-            >Delete</Button
+          <AcButton class="px-4" variant="danger" @click="() => confirmDelete(item.slug)"
+            >Delete</AcButton
           >
-          <Button class="px-4" variant="outline" @click="() => (deleteModal = false)"
-            >Cancel</Button
+          <AcButton class="px-4" variant="outline" @click="() => (deleteModal = false)"
+            >Cancel</AcButton
           >
         </div></template
-      ></Dialog
+      ></AcDialog
     >
   </tr>
 </template>
@@ -64,11 +64,11 @@
 <script setup lang="ts">
 import type { paths } from '@/types/api'
 import { ref } from 'vue'
-import Dialog from '../ui/Dialog.vue'
-import Dropdown from '../ui/Dropdown.vue'
+import AcDialog from '../ui/AcDialog.vue'
+import AcDropdown from '../ui/AcDropdown.vue'
 import TrippleDotsIcon from '../ui/icons/TrippleDotsIcon.vue'
 import WarningIcon from '../ui/icons/WarningIcon.vue'
-import Button from '../ui/Button.vue'
+import AcButton from '../ui/AcButton.vue'
 import { useDeleteArticle } from '@/composables/useArticles'
 import { useRouter } from 'vue-router'
 type Article =
@@ -93,7 +93,7 @@ const dropdownActions = [
   { label: 'Delete', onSelect: () => (deleteModal.value = true) },
 ]
 
-const { mutate: deleteArticle, isPending } = useDeleteArticle()
+const { mutate: deleteArticle } = useDeleteArticle()
 
 function confirmDelete(slug: string) {
   deleteModal.value = false

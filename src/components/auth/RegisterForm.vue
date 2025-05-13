@@ -2,7 +2,7 @@
 import { useForm } from 'vee-validate'
 import RegularInput from '../ui/RegularInput.vue'
 import { RegisterFormSchema } from '@/schemas/RegisterFormSchema'
-import Button from '../ui/Button.vue'
+import AcButton from '../ui/AcButton.vue'
 import { useRegister } from '@/composables/useRegister'
 
 const { handleSubmit } = useForm({
@@ -25,7 +25,7 @@ const onSubmit = handleSubmit((values) => {
       placeholder="sample text"
       as="input"
     />
-    <Button :loading="isPending" :disabled="isPending" class="w-full mt-6">Sign Up</Button>
+    <AcButton :loading="isPending" :disabled="isPending" class="w-full mt-6">Sign Up</AcButton>
     <div class="mt-3 text-center text-sm text-neutral-fg1">
       Have an account?
       <router-link class="text-pt-info font-semibold" to="/login">Sign in</router-link>

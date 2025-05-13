@@ -1,20 +1,20 @@
 <template>
   <form @submit.prevent="onSubmit" class="w-full p-6 rounded-lg bg-white basis-1/3">
     <RegularInput name="tag" placeholder="New tag" label="Tags" class="mb-3" />
-    <Button class="w-full mb-6">Add New Tag</Button>
+    <AcButton class="w-full mb-6">Add New Tag</AcButton>
     <ul class="flex p-4 border border-neutral-st3 rounded-2xl flex-col gap-2">
       <li v-for="tag in sortedTags" :key="tag">
-        <Checkbox :checked="isChecked(tag)" :label="tag" @select="toggle" />
+        <AcCheckbox :checked="isChecked(tag)" :label="tag" @select="toggle" />
       </li>
     </ul>
   </form>
 </template>
 
 <script setup lang="ts">
-import Checkbox from '@/components/ui/Checkbox.vue'
+import AcCheckbox from '@/components/ui/AcCheckbox.vue'
 import RegularInput from '@/components/ui/RegularInput.vue'
 import { useTags } from '@/composables/useTags'
-import Button from '@/components/ui/Button.vue'
+import AcButton from '@/components/ui/AcButton.vue'
 import { useForm } from 'vee-validate'
 import { NewTagSchema } from '@/schemas/NewTagSchema'
 import { useQueryClient } from '@tanstack/vue-query'

@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { configure, useField } from 'vee-validate'
+import { useField } from 'vee-validate'
 
 const props = defineProps({
   label: String,

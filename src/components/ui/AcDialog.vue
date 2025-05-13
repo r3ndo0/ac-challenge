@@ -48,9 +48,6 @@ const isOpen = defineModel<boolean>({ default: false })
 function closeModal() {
   isOpen.value = false
 }
-function openModal() {
-  isOpen.value = true
-}
 
 watch(isOpen, () => console.log('modal opened'))
 </script>

@@ -1,40 +1,92 @@
-# ac
+# Arvancloud Challenge – Vue 3 Dashboard
 
-This template should help get you started developing with Vue 3 in Vite.
+A responsive dashboard for managing RealWorld-style articles.  
+Built with **Vue 3 + Vite + TypeScript**, declarative data-fetching via **TanStack Query**, and fully typed forms with **Vee-Validate + Zod**.
 
-## Recommended IDE Setup
+---
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## ✨ Features
 
-## Type Support for `.vue` Imports in TS
+|                            | Desktop | Mobile |
+| -------------------------- | :-----: | :----: |
+| Auth (login / register)    |   ✔︎   |  ✔︎   |
+| Persist session via cookie |   ✔︎   |  ✔︎   |
+| CRUD articles              |   ✔︎   |  ✔︎   |
+| Pagination (route-based)   |   ✔︎   |  ✔︎   |
+| Responsive table ⇢ cards   |   ✔︎   |  ✔︎   |
+| Edit / Delete modal        |   ✔︎   |  ✔︎   |
+| Global toasts              |   ✔︎   |  ✔︎   |
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+---
 
-## Customize configuration
+## 🔧 Tech stack & why
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+| Package                      | Why it was chosen                                                                                                    |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Vue 3 + TypeScript**       | Composition-API for small, self-contained composables; excellent DX with `<script setup>` and `vue-tsc` type-checks. |
+| **Vite**                     | Instant HMR and out-of-the-box TypeScript; zero config for Tailwind.                                                 |
+| **@tanstack/vue-query (v5)** | Server-state cache, request deduplication, optimistic updates, and refetch controls – no need for Vuex/Pinia.        |
+| **vee-validate 4 + zod**     | Schema-driven validation **and** runtime parsing; Zod schemas double as TypeScript types (`z.infer`).                |
+| **axios**                    | Explicit request/response typing; separate **public** and **private** instances with auth interceptor.               |
+| **@vueuse/core**             | Cookie utilities (`useCookies`), click-outside, debounce, etc.                                                       |
+| **headlessui/vue**           | Accessible dialog & menu primitives; Tailwind-first styling.                                                         |
+| **tailwindcss 4**            | Utility-first styles, mobile-first breakpoints, `@apply` in `<style scoped>`.                                        |
+| **vue-sonner**               | Non-blocking toast notifications with custom JSX/html slots.                                                         |
+| **eslint + prettier**        | Auto-fix + format on save; strict eslint-vue-typescript preset.                                                      |
+| **npm-run-all2**             | Single cross-platform script runner for `build` pipeline.                                                            |
 
-## Project Setup
+---
 
-```sh
+## 📁 Project structure (src)
+
+src/
+├─ components/
+│ ├─ dashboard/ compound widgets
+│ └─ ui/ Button, Dialog, Dropdown, icons
+├─ composables/
+│ ├─ useAuth.ts login / register / sign-out
+│ └─ useArticles.ts query + mutation hooks
+├─ router/
+│ └─ index.ts 2-route pagination pattern
+├─ schemas/
+│ └─ _.schema.ts zod + typedSchema
+├─ types/
+│ └─ api.d.ts OpenAPI → TypeScript
+└─ views/
+└─ _.vue routable pages
+
+---
+
+## ⚠️ API deviations
+
+- **`api.d.ts` ≠ backend output** –  
+  The generated OpenAPI types miss `body` in the article preview and mis-shape
+  validation errors.  
+  &nbsp;&nbsp;→ Patched with intersection types or `AxiosError<any>` in the few affected hooks.
+
+- **Tags are immutable** –  
+  The canonical RealWorld spec has **no `PUT /articles` for `tagList`**.  
+  UI allows adding tags at _create_ time; update form hides tag controls.
+
+---
+
+## 🚀 Running locally
+
+```bash
+# install deps (<= Node 22)
 yarn
-```
 
-### Compile and Hot-Reload for Development
+# start dev server
+yarn dev   # http://localhost:5173
 
-```sh
-yarn dev
-```
+# type-check only
+yarn type-check
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-yarn build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
+# lint & format
 yarn lint
+yarn format
+
+# production build / preview
+yarn build
+yarn preview
 ```
-# ac-challenge

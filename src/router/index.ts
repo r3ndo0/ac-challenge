@@ -4,7 +4,6 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import ArticlesView from '@/views/ArticlesView.vue'
 import CreateArticleView from '@/views/CreateArticleView.vue'
-import EditArticle from '@/components/dashboard/edit/EditArticle.vue'
 import EditArticleView from '@/views/EditArticleView.vue'
 
 const router = createRouter({

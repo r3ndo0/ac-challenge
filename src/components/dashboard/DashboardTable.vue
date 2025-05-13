@@ -68,18 +68,17 @@
         </div>
       </nav>
     </div>
-    <div v-else>{{ JSON.stringify(articles.length) }}</div>
+    <div v-else>Nothing Here</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useArticles, useDeleteArticle } from '@/composables/useArticles'
+import { useArticles } from '@/composables/useArticles'
 import { useCurrentUser } from '@/composables/useAuth'
 import SingleTableRow from './SingleTableRow.vue'
 import ChevronIcon from '../ui/icons/ChevronIcon.vue'
-import Button from '../ui/Button.vue'
 import SingleArticleCard from './SingleArticleCard.vue'
 const route = useRoute()
 const router = useRouter()
@@ -95,13 +94,6 @@ const { data, isFetching, isError } = useArticles(page, pageSize, author)
 const articles = computed(() => data.value?.articles ?? [])
 const articlesCnt = computed(() => data.value?.articlesCount ?? 0)
 const totalPages = computed(() => Math.max(1, Math.ceil(articlesCnt.value / pageSize)))
-const { mutate: deleteArticle, isPending } = useDeleteArticle()
-function firstWords(t: string, n: number) {
-  return t.split(/\s+/).slice(0, n).join(' ') + '…'
-}
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString()
-}
 
 function goto(n: number) {
   if (n < 1 || n > totalPages.value) return

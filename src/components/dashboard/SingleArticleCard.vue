@@ -19,25 +19,28 @@
     </div>
 
     <footer class="flex gap-6 mt-3 justify-end">
-      <Button class="w-full" variant="outline" @click="router.push(`/articles/edit/${item.slug}`)">
+      <AcButton
+        class="w-full"
+        variant="outline"
+        @click="router.push(`/articles/edit/${item.slug}`)"
+      >
         Edit
-      </Button>
-      <Button
+      </AcButton>
+      <AcButton
         @click="() => deleteArticle(item.slug)"
         :loading="isPending"
         :disabled="isPending"
         class="w-full"
         variant="danger"
-        >Delete</Button
+        >Delete</AcButton
       >
     </footer>
   </article>
 </template>
 <script setup lang="ts">
 import type { paths } from '@/types/api'
-import { ref } from 'vue'
 
-import Button from '../ui/Button.vue'
+import AcButton from '../ui/AcButton.vue'
 import { useDeleteArticle } from '@/composables/useArticles'
 import { useRouter } from 'vue-router'
 type Article =
@@ -54,7 +57,7 @@ interface Props {
   item: Article
   index: number
 }
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const router = useRouter()
 

@@ -17,7 +17,9 @@ type DeleteArticle = paths['/articles/{slug}']['delete']
 type UpdateOp = paths['/articles/{slug}']['put']
 type UpdatePayload = UpdateOp['requestBody']['content']['application/json']
 type UpdateResponse = UpdateOp['responses'][200]['content']['application/json']
-type DeleteArticleResponse = DeleteArticle['responses'][200] extends { content: any } ? never : void
+type DeleteArticleResponse = DeleteArticle['responses'][200] extends { content: string }
+  ? never
+  : void
 async function fetchArticles(limit = 10, page = 1, author: Ref<string | undefined>) {
   const offset = (page - 1) * limit
 

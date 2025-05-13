@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
 import RegularInput from '../ui/RegularInput.vue'
-import Button from '../ui/Button.vue'
+import AcButton from '../ui/AcButton.vue'
 import { LoginFormSchema } from '@/schemas/LoginFormSchema'
 import { useLogin } from '@/composables/useLogin'
 
@@ -24,7 +24,7 @@ const onSubmit = handleSubmit((values) => {
       placeholder="sample text"
       as="input"
     />
-    <Button :loading="isPending" :disabled="isPending" class="w-full mt-6">Sign In</Button>
+    <AcButton :loading="isPending" :disabled="isPending" class="w-full mt-6">Sign In</AcButton>
 
     <div class="mt-3 text-center text-sm text-neutral-fg1">
       Don’t have an account?

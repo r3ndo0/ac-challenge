@@ -5,13 +5,13 @@
       <RegularInput name="title" label="Title" placeholder="Title" as="input" />
       <RegularInput name="description" label="Description" placeholder="Description" as="input" />
       <RegularInput name="body" label="Body" placeholder="" as="textarea" />
-      <Button :loading="loading" :disabled="loading" class="mt-6 px-4">Submit</Button>
+      <AcButton :loading="loading" :disabled="loading" class="mt-6 px-4">Submit</AcButton>
     </div>
   </form>
 </template>
 <script setup lang="ts">
 import RegularInput from '@/components/ui/RegularInput.vue'
-import Button from '@/components/ui/Button.vue'
+import AcButton from '@/components/ui/AcButton.vue'
 import { useForm } from 'vee-validate'
 import { watch } from 'vue'
 import { NewArticleSchema, type NewArticle } from '@/schemas/NewArticleSchema'
@@ -26,7 +26,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const { handleSubmit, resetForm, values } = useForm<NewArticle>({
+const { handleSubmit, resetForm } = useForm<NewArticle>({
   validationSchema: NewArticleSchema,
 })
 
