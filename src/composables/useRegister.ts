@@ -4,7 +4,6 @@ import { publicInstance } from '@/composables/useAxios'
 import type { paths } from '@/types/api'
 import { toast } from 'vue-sonner'
 import type { AxiosError } from 'axios'
-import { useUserStore } from '@/stores/useUser'
 import { useRouter } from 'vue-router'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { markRaw } from 'vue'
@@ -15,11 +14,9 @@ type RegisterUser = paths['/users']['post']
 type RegisterRequest = RegisterUser['requestBody']['content']['application/json']
 type RegisterResponse = RegisterUser['responses'][201]['content']['application/json']
 
-/** The RealWorld API returns `{ errors: Record<string, string[]> }` for 4xx validation errors */
 interface ApiValidationError {
   errors: Record<string, string[]>
 }
-/* -------------------------------- */
 
 export function useRegister() {
   const router = useRouter()

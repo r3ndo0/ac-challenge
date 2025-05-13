@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import type { paths } from '@/types/api'
 import type { AxiosError } from 'axios'
 import { publicInstance, privateInstance } from './useAxios'
-import { computed, type Ref } from 'vue'
+import { computed, type ComputedRef, type Ref } from 'vue'
 import { toast } from 'vue-sonner'
 import { CustomToast } from './useToast'
 
@@ -24,14 +24,18 @@ async function fetchArticles(limit = 10, page = 0, author: Ref<string | undefine
   const { data } = await privateInstance.get<Articles200>('/articles', {
     params: { author: author.value, limit, offset },
   })
-  console.log(data)
+
   return data
 }
 
-export function useArticles(page = 0, limit = 10, author: Ref<string | undefined>) {
+export function useArticles(
+  page: ComputedRef<number>,
+  limit = 10,
+  author: Ref<string | undefined>,
+) {
   return useQuery<Articles200, AxiosError>({
     queryKey: ['articles', page, limit, author],
-    queryFn: () => fetchArticles(limit, page, author),
+    queryFn: () => fetchArticles(limit, page.value, author),
     placeholderData: keepPreviousData,
     enabled: computed(() => !!author.value),
   })
@@ -49,7 +53,7 @@ export function useCreateArticle() {
   return useMutation<CreateArticleRes['article'], AxiosError, CreateArticleBody>({
     mutationFn: postArticle,
 
-    onSuccess: (newArticle) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['articles'] })
       queryClient.invalidateQueries({ queryKey: ['articles', 'feed'] })
       toast.success(CustomToast, {
@@ -127,7 +131,7 @@ export function useUpdateArticle() {
     mutationFn: ({ slug, article }) => putArticle(slug, { article }),
 
     onSuccess() {
-      qc.invalidateQueries({ queryKey: ['articles'] })
+      qc.invalidateQueries({ queryKey: ['articles', 'article'] })
       toast.success(CustomToast, {
         position: 'top-center',
         componentProps: {

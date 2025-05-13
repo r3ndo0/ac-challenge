@@ -9,7 +9,7 @@ import { useLogin } from '@/composables/useLogin'
 const { handleSubmit } = useForm({
   validationSchema: LoginFormSchema,
 })
-const { mutate } = useLogin()
+const { mutate, isPending } = useLogin()
 const onSubmit = handleSubmit((values) => {
   mutate({ user: values })
 })
@@ -25,6 +25,6 @@ const onSubmit = handleSubmit((values) => {
       placeholder="sample text"
       as="input"
     />
-    <Button class="w-full mt-6">Sign In</Button>
+    <Button :loading="isPending" :disabled="isPending" class="w-full mt-6">Sign In</Button>
   </form>
 </template>

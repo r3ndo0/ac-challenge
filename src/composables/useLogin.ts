@@ -1,26 +1,21 @@
-// src/api/auth.ts   (add this next to useRegister)
-
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { publicInstance } from '@/composables/useAxios'
 import type { paths } from '@/types/api'
 import { toast } from 'vue-sonner'
 import type { AxiosError, AxiosResponse } from 'axios'
-import { useUserStore } from '@/stores/useUser'
+
 import { useRouter } from 'vue-router'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { markRaw } from 'vue'
 import { CustomToast } from './useToast'
 
-/* ---------- Types ---------- */
 type LoginUser = paths['/users/login']['post']
 type LoginRequest = LoginUser['requestBody']['content']['application/json']
 type LoginResponse = LoginUser['responses'][200]['content']['application/json']
 
-/** RealWorld sends `{ errors: Record<string,string[]> }` for 422 validation errors */
 interface ApiValidationError {
   errors: Record<string, string[]>
 }
-/* -------------------------------- */
 
 export function useLogin() {
   const router = useRouter()
@@ -43,7 +38,6 @@ export function useLogin() {
         return
       }
 
-      /* show one toast for every message on every field */
       Object.entries(fieldErrors).forEach(([field, msgs]) =>
         msgs.forEach((msg) =>
           toast.error(markRaw(CustomToast), {

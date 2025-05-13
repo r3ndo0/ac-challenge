@@ -8,7 +8,7 @@ import { useRegister } from '@/composables/useRegister'
 const { handleSubmit } = useForm({
   validationSchema: RegisterFormSchema,
 })
-const { mutate } = useRegister()
+const { mutate, isPending } = useRegister()
 const onSubmit = handleSubmit((values) => {
   mutate({ user: values })
 })
@@ -25,6 +25,6 @@ const onSubmit = handleSubmit((values) => {
       placeholder="sample text"
       as="input"
     />
-    <Button class="w-full mt-6">Sign Up</Button>
+    <Button :loading="isPending" :disabled="isPending" class="w-full mt-6">Sign Up</Button>
   </form>
 </template>

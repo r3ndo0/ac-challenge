@@ -22,6 +22,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/articles/page/:page(\\d+)',
+      component: ArticlesView,
+      name: 'articles-page',
+      meta: { requiresAuth: true },
+      props: (route) => ({ page: Number(route.params.page) }),
+    },
+    {
       path: '/articles/edit/:slug',
       name: 'articles-edit',
       component: EditArticleView,

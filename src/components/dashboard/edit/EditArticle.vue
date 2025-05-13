@@ -1,6 +1,11 @@
 <template>
   <div class="p-6 flex gap-6 w-full h-full">
-    <ArticleForm v-if="status === 'success'" :initialValues="initialValues" @submit="onSubmit" />
+    <ArticleForm
+      :loading="isPending"
+      v-if="status === 'success'"
+      :initialValues="initialValues"
+      @submit="onSubmit"
+    />
     <div class="w-full px-6 bg-white basis-1/3 flex justify-center items-center">
       <p class="text-center">
         looks like RealWorld api does not provide a way to update tags associated with an article.
@@ -12,7 +17,7 @@
 <script setup lang="ts">
 import ArticleForm from '../create/ArticleForm.vue'
 import { useSingleArticle, useUpdateArticle } from '@/composables/useArticles'
-import type { paths } from '@/types/api'
+
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 interface FormData {
@@ -23,7 +28,7 @@ interface FormData {
 const route = useRoute()
 const slug = computed(() => route.params.slug as string | undefined)
 
-const { data: article, isLoading, error, status } = useSingleArticle(slug)
+const { data: article, status } = useSingleArticle(slug)
 const { mutate: updateArticle, isPending } = useUpdateArticle()
 
 const onSubmit = (payload: FormData) => {

@@ -5,10 +5,7 @@
       <RegularInput name="title" label="Title" placeholder="Title" as="input" />
       <RegularInput name="description" label="Description" placeholder="Description" as="input" />
       <RegularInput name="body" label="Body" placeholder="" as="textarea" />
-
-      {{ JSON.stringify(values) }}
-
-      <Button class="mt-6 px-4">Submit</Button>
+      <Button :loading="loading" :disabled="loading" class="mt-6 px-4">Submit</Button>
     </div>
   </form>
 </template>
@@ -25,10 +22,11 @@ interface Props {
     description: string
     body: string
   }
+  loading: boolean
 }
 const props = defineProps<Props>()
 
-const { handleSubmit, setValues, resetForm, values } = useForm<NewArticle>({
+const { handleSubmit, resetForm, values } = useForm<NewArticle>({
   validationSchema: NewArticleSchema,
 })
 

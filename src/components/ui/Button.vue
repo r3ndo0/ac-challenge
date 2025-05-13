@@ -11,18 +11,24 @@
     :disabled="disabled"
     @click="$emit('click')"
   >
-    <slot />
+    <LoadingIcon v-if="loading" class="animate-spin m-auto" />
+    <slot v-else />
   </button>
 </template>
 
 <script setup lang="ts">
+import LoadingIcon from './icons/LoadingIcon.vue'
 defineProps({
   variant: {
     type: String,
-    default: 'success', // Default to 'success' (green)
+    default: 'success',
     validator: (value: string) => ['success', 'danger', 'outline'].includes(value),
   },
   disabled: {
+    type: Boolean,
+    default: false,
+  },
+  loading: {
     type: Boolean,
     default: false,
   },

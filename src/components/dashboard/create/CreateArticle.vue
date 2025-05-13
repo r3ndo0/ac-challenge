@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 flex gap-6 w-full h-full">
-    <CreateArticleForm @submit="onSubmit" />
+    <CreateArticleForm :loading="isPending" @submit="onSubmit" />
     <TagsForm v-model="selectedTags" @new-tag="prependTag" />
   </div>
 </template>
@@ -15,7 +15,7 @@ function prependTag(tag: string) {
   selectedTags.value = [tag, ...selectedTags.value.filter((t) => t !== tag)]
 }
 
-const { mutate: createNewArticle } = useCreateArticle()
+const { mutate: createNewArticle, isPending } = useCreateArticle()
 
 const onSubmit = (payload: NewArticle) => {
   createNewArticle({

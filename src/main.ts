@@ -3,7 +3,7 @@ import { VueQueryPlugin, QueryClient, keepPreviousData } from '@tanstack/vue-que
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import { createPinia } from 'pinia'
+
 import { useCookies } from '@vueuse/integrations/useCookies'
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
   },
 })
 const app = createApp(App)
-const pinia = createPinia()
+
 router.beforeEach((to, _from, next) => {
   const needsAuth = to.matched.some((r) => r.meta.requiresAuth)
   const token = useCookies().get('token')
@@ -32,5 +32,5 @@ router.beforeEach((to, _from, next) => {
 
 app.use(router)
 app.use(VueQueryPlugin, { queryClient })
-app.use(pinia)
+
 app.mount('#app')
