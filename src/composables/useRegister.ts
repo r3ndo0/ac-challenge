@@ -2,12 +2,10 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { publicInstance } from '@/composables/useAxios'
 import type { paths } from '@/types/api'
-import { toast } from 'vue-sonner'
 import type { AxiosError, AxiosResponse } from 'axios'
 import { useRouter } from 'vue-router'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import { markRaw } from 'vue'
-import { CustomToast } from './useToast'
+import { useToast } from './useToast'
 
 /* ---------- Types ---------- */
 type RegisterUser = paths['/users']['post']
@@ -21,8 +19,8 @@ interface ApiValidationError {
 export function useRegister() {
   const router = useRouter()
   const queryClient = useQueryClient()
-
   const cookies = useCookies()
+  const { showError, showValidationError } = useToast()
 
   return useMutation<
     AxiosResponse<RegisterResponse>,
@@ -41,26 +39,12 @@ export function useRegister() {
       console.log(error)
       const fieldErrors = error.response?.data?.errors
       if (!fieldErrors) {
-        toast.error('An unexpected error occurred. Please try again.')
+        showError('An unexpected error occurred. Please try again.')
         return
       }
 
       Object.entries(fieldErrors).forEach(([field, messages]) => {
-        messages.forEach((msg) => {
-          toast.error(markRaw(CustomToast), {
-            position: 'top-center',
-            componentProps: {
-              htmlContent: `<p><strong>${field}</strong> ${msg}</p>`,
-            },
-            style: {
-              background: '#fae4e4',
-              boxShadow: '0 0 10px #2533433D',
-              padding: '12px 16px',
-              borderRadius: '4px',
-              color: '#d32f2f',
-            },
-          })
-        })
+        messages.forEach((msg) => showValidationError(field, msg))
       })
     },
   })
