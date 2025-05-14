@@ -33,7 +33,6 @@ Built with **Vue 3 + Vite + TypeScript**, declarative data-fetching via **TanSta
 | **tailwindcss 4**            | Utility-first styles, mobile-first breakpoints,` @apply` in `<style scoped>`.                                        |
 | **vue-sonner**               | Non-blocking toast notifications with custom JSX/html slots.                                                         |
 | **eslint + prettier**        | Auto-fix + format on save; strict eslint-vue-typescript preset.                                                      |
-| **npm-run-all2**             | Single cross-platform script runner for `build` pipeline.                                                            |
 
 ---
 

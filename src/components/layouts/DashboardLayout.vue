@@ -1,5 +1,5 @@
 <template>
-  <main class="md:h-screen bg-neutral-bg2">
+  <main class="h-screen overflow-y-scroll no-scrollbar bg-neutral-bg2">
     <header
       class="fixed inset-x-0 top-0 z-20 h-16 px-6 border-b flex justify-between items-center bg-white border-neutral-st3"
     >
